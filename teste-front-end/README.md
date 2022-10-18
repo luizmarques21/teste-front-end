@@ -1,3 +1,11 @@
+# Como testar a solução
+
+1. No prompt de comando, navegue para a pasta `servidor-api` e execute o comando `npm install` para instalar as dependencias do projeto.\
+Depois execute `npm start` para subir o servidor Node responsável pelo gerenciamento da sessão
+
+2. Abra uma nova janlea do prompt de comando, navegue para a pasta `teste-front-end` e execute o comando `npm install` para instalar as dependências da aplicação.\
+Depois execute `npm start` para iniciar a aplicação.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
