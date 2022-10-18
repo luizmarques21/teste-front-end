@@ -1,0 +1,10 @@
+.inputContainer {
+    margin-bottom: 1.5rem;
+    input {
+        padding: 16px;
+        border: 2px solid black;
+        &::placeholder {
+            color: black;
+        }
+    }
+}
