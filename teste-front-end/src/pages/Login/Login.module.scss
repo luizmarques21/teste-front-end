@@ -10,4 +10,25 @@
 .formulario {
     margin-top: 4rem;
     margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.inputContainer {
+    input {
+        background-color: white;
+    }
+    label {
+        color: black;
+    }
+}
+
+.botao {
+    color: black;
+    border: 2px solid black;
+    font-weight: bold;
+    padding: 1rem;
+    background-color: white;
+    margin-top: 1rem;
 }

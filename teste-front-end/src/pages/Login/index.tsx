@@ -1,21 +1,63 @@
 import styles from './Login.module.scss';
 import logo from 'assets/logo.png';
-import Input from '../../components/Input';
-import Botao from '../../components/Botao';
+import { Box, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import LoginAPI from './../../api/LoginAPI';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+    const [nomeUsuario, setNomeUsuario] = useState('');
+    const [email, setEmail] = useState('');
+    const [erroEmail, setErroEmail] = useState(false);
+    const [emailHelperText, setEmailHelperText] = useState('');
+    const navigate = useNavigate();
+
+    const enviarFormulario = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const emailValido = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+        setErroEmail(!emailValido);
+        setEmailHelperText(!emailValido ? 'Email inválido' : '');
+        if (!emailValido) {
+            return;
+        }
+
+        LoginAPI.logarUsuario(nomeUsuario, email)
+        .then((resposta) => {
+            navigate('/buscarVideos');
+        })
+        .catch((error) => {
+            console.log(error);
+            alert('Ocorreu um erro ao logar');
+        });
+    }
+
     return (
         <>
-            <div className={styles.logo}>
+            <Box className={styles.logo}>
                 <img src={logo} alt='Logo'/>
-            </div>
-            <div className={styles.formulario}>
-                <Input name='nome' id='nome' required={true} placeholder='Nome do usuário' value='' />
-                <Input name='email' id='email' required={true} placeholder='E-mail' value='' />
-            </div>
-            <Botao type='button'>
-                ENTRAR
-            </Botao>
+            </Box>
+            <Box className={styles.formulario} component='form' onSubmit={enviarFormulario}>
+                <TextField 
+                    value={nomeUsuario} 
+                    onChange={e => setNomeUsuario(e.target.value)} 
+                    label='Nome do usuário' 
+                    variant='outlined'
+                    className={styles.inputContainer}
+                    sx={{marginBottom: '2rem'}}
+                />
+                <TextField 
+                    value={email} 
+                    onChange={e => setEmail(e.target.value)} 
+                    label='E-mail' 
+                    variant='outlined'
+                    error={erroEmail}
+                    helperText={emailHelperText}
+                    className={styles.inputContainer}
+                    sx={{marginBottom: '2rem'}}
+                />
+                <Button className={styles.botao} type='submit' variant='outlined'>Entrar</Button>
+            </Box>
         </>
     );
 }
