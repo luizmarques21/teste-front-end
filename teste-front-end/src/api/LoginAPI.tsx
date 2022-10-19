@@ -10,4 +10,8 @@ export default class LoginAPI {
         return conexao.post('/login', {nomeUsuario, email});
     }
 
+    public static consultarUsuario() {
+        return conexao.get('/login');
+    }
+
 }

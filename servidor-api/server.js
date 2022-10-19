@@ -1,24 +1,18 @@
 const express = require("express");
-const uuid = require("uuid");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const FileStore = require("session-file-store")(session);
-
+const router = express.Router();
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(
   session({
-    genId: (req) => {
-      return uuid();
-    },
-    store: new FileStore(),
     secret: "sessionSecret",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
   })
 );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -28,23 +22,27 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("/login", (req, res) => {
-  const nomeUsuario = req.session.nomeUsuario,
-    email = req.session.email;
+var sess;
+
+router.post("/login", (req, res) => {
+  sess = req.session;
+  sess.nomeUsuario = req.body.nomeUsuario;
+  sess.email = req.body.email;
+  res.end("done");
+});
+
+router.get("/login", (req, res) => {
+  const nomeUsuario = sess.nomeUsuario,
+    email = sess.email;
   res.send({ nomeUsuario, email });
 });
 
-app.post("/login", (req, res) => {
-  req.session.nomeUsuario = req.body.nomeUsuario;
-  req.session.email = req.body.email;
-  res.send(req.session);
-});
-
-app.delete("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.session.destroy();
-  res.send(req.session);
+  res.end("done");
 });
 
+app.use("/", router);
 app.listen(8080, () => {
   console.log("Listening on localhost:8080");
 });

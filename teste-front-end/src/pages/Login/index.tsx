@@ -2,8 +2,9 @@ import styles from './Login.module.scss';
 import logo from 'assets/logo.png';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import LoginAPI from './../../api/LoginAPI';
+import LoginAPI from '../../api/LoginAPI';
 import { useNavigate } from 'react-router-dom';
+import stylesTema from 'styles/Tema.module.scss';
 
 export default function Login() {
     const [nomeUsuario, setNomeUsuario] = useState('');
@@ -24,6 +25,7 @@ export default function Login() {
 
         LoginAPI.logarUsuario(nomeUsuario, email)
         .then((resposta) => {
+            localStorage.setItem('usuario', resposta.data);
             navigate('/buscarVideos');
         })
         .catch((error) => {
@@ -33,7 +35,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div className={stylesTema.container}>
             <Box className={styles.logo}>
                 <img src={logo} alt='Logo'/>
             </Box>
@@ -58,6 +60,6 @@ export default function Login() {
                 />
                 <Button className={styles.botao} type='submit' variant='outlined'>Entrar</Button>
             </Box>
-        </>
+        </div>
     );
 }

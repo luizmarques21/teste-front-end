@@ -1,5 +1,8 @@
+import Header from "components/Header";
+
 export default function BuscarVideos() {
+
     return (
-        <div>teste</div>
+        <Header />
     )
 }
